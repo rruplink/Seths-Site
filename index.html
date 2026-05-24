@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Seth</title>
+    <style>
+      :root {
+        --bg: #050505;
+        --fg: #ededed;
+        --muted: #a7a7a7;
+        --dim: #666;
+        --line: #393939;
+        --hot: #e8ff8f;
+        --panel: #0c0c0c;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: "Courier New", Courier, monospace;
+        font-size: 16px;
+        line-height: 1.55;
+      }
+
+      a {
+        color: var(--hot);
+        text-decoration: none;
+      }
+
+      a:hover,
+      a:focus {
+        color: var(--fg);
+        text-decoration: underline;
+      }
+
+      .layout {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 240px minmax(0, 1fr);
+      }
+
+      .side-nav {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        padding: 28px 18px;
+        border-right: 1px solid var(--line);
+        background: #030303;
+        overflow-y: auto;
+      }
+
+      .nav-title {
+        margin: 0 0 28px;
+        color: var(--muted);
+        white-space: pre;
+        font-size: 12px;
+        line-height: 1.15;
+      }
+
+      .nav-list,
+      .link-list,
+      .archive-list,
+      .contact-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .nav-list li {
+        margin: 0 0 12px;
+      }
+
+      .nav-list a::before {
+        content: "=> ";
+        color: var(--dim);
+      }
+
+      .subpage-label {
+        margin: 36px 0 10px;
+        color: var(--dim);
+      }
+
+      .main {
+        width: min(920px, 100%);
+        padding: 44px 48px 72px;
+      }
+
+      .ascii-name {
+        margin: 0 0 40px;
+        color: var(--fg);
+        white-space: pre;
+        font-size: clamp(9px, 2vw, 18px);
+        line-height: 1.05;
+        letter-spacing: 0;
+        max-width: 100%;
+        overflow: hidden;
+      }
+
+      section {
+        padding: 28px 0 34px;
+        border-top: 1px solid var(--line);
+      }
+
+      h2 {
+        margin: 0 0 18px;
+        color: var(--fg);
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      h2::before {
+        content: "## ";
+        color: var(--dim);
+      }
+
+      p {
+        max-width: 72ch;
+        margin: 0 0 18px;
+      }
+
+      .link-list li,
+      .contact-list li {
+        margin: 0 0 12px;
+      }
+
+      .link-list a::before,
+      .archive-list a::before,
+      .contact-list a::before {
+        content: "[link] ";
+        color: var(--dim);
+      }
+
+      .item-note {
+        display: block;
+        max-width: 72ch;
+        margin: 3px 0 0 7ch;
+        color: var(--muted);
+      }
+
+      .archive-box {
+        max-width: 760px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+      }
+
+      .tabs {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .tab-button {
+        min-height: 42px;
+        padding: 10px 8px;
+        border: 0;
+        border-right: 1px solid var(--line);
+        border-radius: 0;
+        background: transparent;
+        color: var(--muted);
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .tab-button:last-child {
+        border-right: 0;
+      }
+
+      .tab-button[aria-selected="true"] {
+        color: var(--hot);
+        background: #141414;
+      }
+
+      .archive-panel {
+        display: none;
+        height: 260px;
+        padding: 18px;
+        overflow-y: auto;
+      }
+
+      .archive-panel.active {
+        display: block;
+      }
+
+      .archive-list li {
+        margin: 0 0 16px;
+      }
+
+      .archive-tag {
+        color: var(--dim);
+      }
+
+      .cursor {
+        color: var(--hot);
+        animation: blink 1.2s steps(2, start) infinite;
+      }
+
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .layout {
+          display: block;
+        }
+
+        .side-nav {
+          position: relative;
+          height: auto;
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .main {
+          padding: 30px 20px 54px;
+        }
+
+        .tabs {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .tab-button:nth-child(2) {
+          border-right: 0;
+        }
+
+        .tab-button:nth-child(-n + 2) {
+          border-bottom: 1px solid var(--line);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <nav class="side-nav" aria-label="Site navigation">
+        <pre class="nav-title">+--------------+
+|  seth.site   |
++--------------+</pre>
+        <ul class="nav-list">
+          <li><a href="#about">About Me</a></li>
+          <li><a href="#contact">Contact Me</a></li>
+        </ul>
+
+        <p class="subpage-label">subpages</p>
+        <ul class="nav-list">
+          <li><a href="projects/anki-chinese-stroke-order-generator.html">Anki Chinese Stroke Order Generator</a></li>
+        </ul>
+      </nav>
+
+      <main class="main">
+        <pre class="ascii-name" aria-label="Seth">
+  _________        __  .__
+ /   _____/  _____/  |_|  |__
+ \_____  \ _/ __ \   __\  |  \
+ /        \\  ___/|  | |   Y  \
+/_______  / \___  >__| |___|  /
+        \/      \/          \/ </pre>
+
+        <section id="about">
+          <h2>About Me</h2>
+          <p>
+            Hi, I am Seth. I'm a political science and Chinese 
+            student at CUNY Hunter College in NYC. I'm presently
+            working on a startup in the health space and writing
+            about whatever piques my interest at the moment.
+            This is a small personal website for the things I am
+            thinking about, writing, creating, and recommending.
+          </p>
+          <p>
+            I'm a tech-optimist. I believe in the power of technology
+            and innovation to solve problems. I'm a capitalist who believes
+            in and supports free markets, although I also have a great amount 
+            of admiration for the People's Republic of China and it's unique
+            economic structure + the development it has facilitated. I wouldn't
+            call myself an effective altruist, but I understand their drives
+            and wish them the best.
+          </p>
+          <p>
+            I'm fascinated by modern sociology, the science of development and capital formation, 
+            energy as a field (especially nuclear), scarcity-eliminating tech 
+            (desalination, aquaculture, hydroponics, sustainable infrastructure),
+            Chinese politics/society, materialist change, near-death experiences, 
+            chronic disease (in particular invisible illness), and the works of HP
+            Lovecraft and Chuck Pahlaniuk.
+          </p>
+        </section>
+
+        
+
+        <section id="contact">
+          <h2>Contact Me</h2>
+          <ul class="contact-list">
+            <li><a href="mailto:sethhdowell@protonmail.com">sethhdowell@protonmail.com</a></li>
+            <li><a href="https://github.com/rruplink">GitHub</a></li>
+            <li><a href="https://x.com/rruplink1">Twitter</a></li>
+          </ul>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const tabs = Array.from(document.querySelectorAll("[role='tab']"));
+      const panels = Array.from(document.querySelectorAll("[role='tabpanel']"));
+
+      function selectTab(tab) {
+        tabs.forEach((item) => {
+          item.setAttribute("aria-selected", String(item === tab));
+        });
+
+        panels.forEach((panel) => {
+          panel.classList.toggle("active", panel.id === tab.getAttribute("aria-controls"));
+        });
+      }
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => selectTab(tab));
+      });
+    </script>
+  </body>
+</html>
